@@ -3,14 +3,44 @@ const todoInput = document.querySelector(".todo-input");
 const todoButton = document.querySelector(".todo-button");
 const todoList = document.querySelector(".todo-list");
 const filterOption = document.querySelector(".filter-todo");
+const header = document.querySelector("header");
+const footer = document.querySelector("footer");
+
+//SWITCH MODE
+function myFunction() {
+  var element = document.body;
+  element.classList.toggle("dark-mode");
+}
 
 //Event Listeners
 document.addEventListener("DOMContentLoaded", getTodos);
 todoButton.addEventListener("click", addTodo);
 todoList.addEventListener("click", deleteTodo);
 filterOption.addEventListener("click", filterTodo);
-
+//HEADER & FOOTER BACKGROUND EVENTS
+header.addEventListener("click", changeBackground);
+footer.addEventListener("click", changeBackground);
+footer.addEventListener("click", removeFooter);
 //Functions
+//CHANGE BACKGROUND HEADER & FOOTER & Create a DIV
+function changeBackground(e) {
+  alert("Are you sure that you wanna do this?");
+  header.style.backgroundColor = "#FF0000";
+  footer.style.backgroundColor = "#FF0000";
+  const messageIDK = document.createElement("div");
+  footer.appendChild(messageIDK);
+  messageIDK.classList.add("messageIDK");
+  messageIDK.textContent =
+    "Hi, IDK why I'm here but it's ok! Just click and I (SHOULD) go away!";
+  header.addEventListener("click", () => (header.style.backgroundColor = ""));
+  footer.addEventListener("click", () => (footer.style.backgroundColor = ""));
+  header.removeEventListener("click", changeBackground);
+  footer.removeEventListener("click", changeBackground);
+}
+
+function removeFooter(e) {
+  footer.remove();
+}
 
 function addTodo(e) {
   //Prevent natural behaviour
@@ -51,7 +81,7 @@ function deleteTodo(e) {
     todo.classList.add("fall");
     //at the end
     removeLocalTodos(todo);
-    todo.addEventListener("transitionend", e => {
+    todo.addEventListener("transitionend", (e) => {
       todo.remove();
     });
   }
@@ -64,7 +94,7 @@ function deleteTodo(e) {
 
 function filterTodo(e) {
   const todos = todoList.childNodes;
-  todos.forEach(function(todo) {
+  todos.forEach(function (todo) {
     switch (e.target.value) {
       case "all":
         todo.style.display = "flex";
@@ -115,7 +145,7 @@ function getTodos() {
   } else {
     todos = JSON.parse(localStorage.getItem("todos"));
   }
-  todos.forEach(function(todo) {
+  todos.forEach(function (todo) {
     //Create todo div
     const todoDiv = document.createElement("div");
     todoDiv.classList.add("todo");
